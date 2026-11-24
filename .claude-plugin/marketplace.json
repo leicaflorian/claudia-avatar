@@ -1,0 +1,16 @@
+{
+  "name": "claudia-avatar",
+  "owner": {
+    "name": "Florian Leica"
+  },
+  "metadata": {
+    "description": "Claudia, a pixel-art avatar for the Claude Code status line"
+  },
+  "plugins": [
+    {
+      "name": "claudia-avatar",
+      "source": "./",
+      "description": "Animated pixel-art avatar in the status line, with notifications, test results, turn summaries and context and cost thresholds."
+    }
+  ]
+}

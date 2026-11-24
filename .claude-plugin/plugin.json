@@ -1,0 +1,70 @@
+{
+  "name": "claudia-avatar",
+  "version": "1.0.0",
+  "description": "Claudia, an animated pixel-art avatar for your status line: she reacts to what Claude is doing, pings you when you're needed, shows test results and a summary of every turn, and keeps an eye on context and cost.",
+  "author": {
+    "name": "Florian Leica"
+  },
+  "homepage": "https://github.com/leicaflorian/claudia-avatar",
+  "repository": "https://github.com/leicaflorian/claudia-avatar",
+  "keywords": [
+    "statusline",
+    "avatar",
+    "pixel-art",
+    "notifications",
+    "tests",
+    "companion"
+  ],
+  "userConfig": {
+    "size": {
+      "type": "string",
+      "title": "Size",
+      "description": "Avatar size in the status line",
+      "options": [
+        "small",
+        "large"
+      ],
+      "default": "small"
+    },
+    "notify": {
+      "type": "string",
+      "title": "Desktop notifications",
+      "description": "Notify when Claude asks for permission or finishes a long turn",
+      "options": [
+        "on",
+        "off"
+      ],
+      "default": "on"
+    },
+    "notify_after": {
+      "type": "number",
+      "title": "Long turn (seconds)",
+      "description": "Only notify the end of a turn that took at least this many seconds",
+      "default": 30
+    },
+    "ctx_warn": {
+      "type": "number",
+      "title": "Context: warning (%)",
+      "description": "Yellow bar from this percentage",
+      "default": 60
+    },
+    "ctx_alarm": {
+      "type": "number",
+      "title": "Context: alarm (%)",
+      "description": "Red bar and a /compact hint from this percentage",
+      "default": 85
+    },
+    "cost_warn": {
+      "type": "number",
+      "title": "Cost: warning ($)",
+      "description": "Session cost in yellow from this amount",
+      "default": 2
+    },
+    "cost_alarm": {
+      "type": "number",
+      "title": "Cost: alarm ($)",
+      "description": "Session cost in red, with a warning, from this amount",
+      "default": 5
+    }
+  }
+}
