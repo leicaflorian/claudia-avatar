@@ -8,6 +8,8 @@ She lives in the Claude Code status line. She reacts to what Claude is doing, pi
 you're needed, tells you how the tests went, sums up every turn and keeps an eye on context
 and cost.
 
+![Claudia in the Claude Code status line](docs/demo.gif)
+
 ![expressions](docs/preview-expressions.png)
 
 > Claudia is an *open character* by **anabology**. Credit ("Claudia by anabology") is appreciated.
