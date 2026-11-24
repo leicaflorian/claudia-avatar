@@ -138,6 +138,7 @@ scripts/
   sync.sh         copies the status line and art to ~/.claude/claudia-avatar/app
   setup.sh        sets/removes the status line in settings.json
   banner.sh       short startup animation
+  reorient-art.py re-encodes the .ans art to reduce row seams (run after editing any frame)
 art/              .ans frames: frames (large), framesS (small), banner; *256 for 256-color terminals
 ```
 
