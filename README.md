@@ -142,11 +142,23 @@ scripts/
   setup.sh        sets/removes the status line in settings.json
   banner.sh       short startup animation
   reorient-art.py re-encodes the .ans art to reduce row seams (run after editing any frame)
+  art-png.py      converts the .ans art to PNG and back, to edit frames in a pixel editor
 art/              .ans frames: frames (large), framesS (small), banner; *256 for 256-color terminals
 ```
 
 An installed plugin's folder changes with every version, so the status line points to the
 stable copy in `~/.claude/claudia-avatar/app/`, which the session-start hook keeps up to date.
+
+To edit a frame in a pixel editor (Aseprite, Piskel…):
+
+```
+scripts/art-png.py to-png                              # art/ → art-png/ (git-ignored), 1 px per pixel
+scripts/art-png.py from-png art-png/frames/idle.png    # back to art/frames/idle.ans
+scripts/art-png.py from-png -o art/frames256/idle.ans art-png/frames/idle.png   # 256-color version
+```
+
+`from-png` orients the block glyphs like `reorient-art.py` and maps colors to the 256-color
+palette the art already uses. Run `scripts/art-png.py` with no arguments for all the options.
 
 To try it locally without installing: `claude --plugin-dir .`, then `/claudia-avatar:setup`.
 To release a new version, bump `version` in `.claude-plugin/plugin.json`: without that, users
