@@ -1,0 +1,33 @@
+MIT License
+
+Copyright (c) 2026 Florian Leica
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+About the character
+
+Claudia is an open character created by anabology (https://claudia.gallery).
+The pixel-art frames in art/, docs/ and .claude-plugin/icon.png are a fan
+redraw of that character. The MIT license above covers this repository's code
+and these drawings as far as this project's own work goes; it does not grant
+any rights in the Claudia character itself, which remain with anabology under
+the terms they publish. Please credit "Claudia by anabology" when you reuse the
+character. This project is not affiliated with anabology or with Anthropic.

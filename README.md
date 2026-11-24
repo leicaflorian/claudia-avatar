@@ -147,3 +147,10 @@ stable copy in `~/.claude/claudia-avatar/app/`, which the session-start hook kee
 To try it locally without installing: `claude --plugin-dir .`, then `/claudia-avatar:setup`.
 To release a new version, bump `version` in `.claude-plugin/plugin.json`: without that, users
 don't get the update.
+
+## License
+
+The code is released under the [MIT License](LICENSE). The Claudia character belongs to
+anabology ([claudia.gallery](https://claudia.gallery)): the license doesn't grant any rights in
+the character itself, so please credit "Claudia by anabology" when you reuse her. See
+[LICENSE](LICENSE) for the full note.

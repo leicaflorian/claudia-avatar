@@ -1,12 +1,13 @@
 {
   "name": "claudia-avatar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Claudia, an animated pixel-art avatar for your status line: she reacts to what Claude is doing, pings you when you're needed, shows test results and a summary of every turn, and keeps an eye on context and cost.",
   "author": {
     "name": "Florian Leica"
   },
   "homepage": "https://github.com/leicaflorian/claudia-avatar",
   "repository": "https://github.com/leicaflorian/claudia-avatar",
+  "license": "MIT",
   "keywords": [
     "statusline",
     "avatar",
