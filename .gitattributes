@@ -1,0 +1,4 @@
+# Scripts and art must keep LF line endings on every platform: with CRLF
+# (e.g. git core.autocrlf=true on WSL/Windows) "#!/usr/bin/env bash\r" fails.
+* text=auto eol=lf
+*.png binary

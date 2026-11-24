@@ -1,6 +1,6 @@
 {
   "name": "claudia-avatar",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Claudia, an animated pixel-art avatar for your status line: she reacts to what Claude is doing, pings you when you're needed, shows test results and a summary of every turn, and keeps an eye on context and cost.",
   "author": {
     "name": "Florian Leica"
