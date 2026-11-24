@@ -17,6 +17,12 @@ if [ -f "$HOME_DIR/config" ]; then
 fi
 [ "${CLAUDIA_SIZE:-$size}" = large ] && SZ="" || SZ="S"
 case "${CLAUDIA_COLORS:-${COLORTERM:-}}" in truecolor|24bit) SFX="";; *) SFX="256";; esac
+# style: every folder in art/ is one. Chosen with the setup command, kept in a file of
+# its own because the hooks rewrite config at every session start.
+style=portrait
+if [ -f "$HOME_DIR/style" ]; then read -r v < "$HOME_DIR/style"; [[ $v =~ ^[a-z0-9_-]+$ ]] && style=$v; fi
+STYLE="${CLAUDIA_STYLE:-$style}"; [ -d "$ART/$STYLE/frames" ] || STYLE=portrait
+FRAMES="$ART/$STYLE/frames$SZ$SFX"
 
 input=$(cat)
 get() { printf '%s' "$input" | tr -d '\n' | sed -n "s/.*\"$1\"[[:space:]]*:[[:space:]]*\"\([^\"]*\)\".*/\1/p" | head -1; }
@@ -51,7 +57,7 @@ if [[ $f == idle ]]; then
   elif (( age > 600 )); then f=sleep; label="zzz"
   elif (( RANDOM % 5 == 0 )); then f=blink; fi
 fi
-[ -f "$ART/frames$SZ$SFX/$f.ans" ] || f=idle
+[ -f "$FRAMES/$f.ans" ] || f=idle
 
 # colors
 R=$'\e[0m'; D=$'\e[2m'
@@ -77,4 +83,4 @@ l2="${D}${cwd##*/}${branch:+  ⎇ $branch}${R}"
 if [ -n "$SZ" ]; then info=( "" "$l1" "$l2" "$meter" "$tests" "" "" )
 else info=( "" "" "$l1" "$l2" "$meter" "$tests" "" "" "" "" ); fi
 i=0
-while IFS= read -r line; do printf '%s  %s\n' "$line" "${info[$i]}"; i=$((i+1)); done < "$ART/frames$SZ$SFX/$f.ans"
+while IFS= read -r line; do printf '%s  %s\n' "$line" "${info[$i]}"; i=$((i+1)); done < "$FRAMES/$f.ans"

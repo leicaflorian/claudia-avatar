@@ -1,14 +1,16 @@
 # Claudia for Claude Code
 
-A pixel-art avatar of Claudia, the open character by anabology ([claudia.gallery](https://claudia.gallery)),
-redrawn from the av2-front #4 reference: black bob, orange streak, star hair clip,
-headset microphone, orange jumpsuit with a silver zip.
+A pixel-art avatar of Claudia, the open character by anabology ([claudia.gallery](https://claudia.gallery)):
+black bob, orange streak, star hair clip, headset microphone, orange jumpsuit with a silver zip.
+She comes in two styles, one close to the character sheet and one to the av2-front #4 render.
 
 She lives in the Claude Code status line. She reacts to what Claude is doing, pings you when
 you're needed, tells you how the tests went, sums up every turn and keeps an eye on context
 and cost.
 
 ![Claudia in the Claude Code status line](docs/demo.gif)
+
+![the two styles: portrait and chibi](docs/preview-styles.png)
 
 ![expressions](docs/preview-expressions.png)
 
@@ -31,8 +33,8 @@ Answer `y` to add the marketplace, then pick a scope. Then, once:
 
 and restart Claude Code. The setup step is needed because a plugin can add hooks but not a
 status line: the script sets it in `~/.claude/settings.json` (with a backup), asks before
-replacing a status line you already have and, if you want, adds an animated banner when you
-start `claude`.
+replacing a status line you already have, lets you pick the style and, if you want, adds an
+animated banner when you start `claude`.
 
 On Claude Code older than 2.1.275, in two steps:
 
@@ -94,11 +96,13 @@ And on top of that:
 Example (small size):
 
 ```
-  ▄▄      ▄▄▄
-  ▀        ▀ ▀  ● Opus · done in 2m31s · 4 files · 17 tools
-   ▀▀▀▀▀▀▀▀     my-app  ⎇ main
-  ▀ ▀▀  ▀▀ ▀    ███░░░░░░░ 34% ctx · $0.42
- ▀ ▀▀▀▀▀▀▀▀ ▀   ✓ 42 tests passed
+  ▄▄ ▀▀▀▀▀▄▄▀▄
+ ▀       ▀▀▀▀   ● Opus · done in 2m31s · 4 files · 17 tools
+   ▀▄▄▀▀▄▄▀     my-app  ⎇ main
+  ▀▄▀▀▄▄▀▀ ▄    ███░░░░░░░ 34% ctx · $0.42
+ ▀ ▀▀ ▀▀ ▀▀ ▀   ✓ 42 tests passed
+  ▄▄▀    ▀▄▄
+   ▄▀    ▀▄
 ```
 
 The hooks never block or approve anything: they only write a state file in
@@ -116,7 +120,24 @@ In `/plugin` → `claudia-avatar` → options (they apply from the next session)
 | `ctx_warn` / `ctx_alarm` | `60` / `85` | context thresholds (%) |
 | `cost_warn` / `cost_alarm` | `2` / `5` | session cost thresholds ($) |
 
-Environment variables: `CLAUDIA_SIZE=large|small`, `CLAUDIA_COLORS=truecolor|256`.
+Environment variables: `CLAUDIA_SIZE=large|small`, `CLAUDIA_COLORS=truecolor|256`,
+`CLAUDIA_STYLE=portrait|chibi`.
+
+### Style
+
+| Style | |
+|---|---|
+| `portrait` (default) | close to the character sheet: round black bob, straight fringe, blue eyes, freckles |
+| `chibi` | close to the av2-front #4 render: glossy blue-black hair, flipped tips, big dark eyes |
+
+The setup asks which one you want. To change it later, with no restart:
+
+```
+/claudia-avatar:setup style chibi
+```
+
+The style is not one of the plugin options because those apply from the next session, while
+this applies at once to the status line and the banner.
 
 ## JetBrains terminal (IntelliJ, PhpStorm…)
 The JetBrains terminal doesn't declare `COLORTERM=truecolor`, so Claude Code drops to 256
@@ -141,24 +162,36 @@ scripts/
   sync.sh         copies the status line and art to ~/.claude/claudia-avatar/app
   setup.sh        sets/removes the status line in settings.json
   banner.sh       short startup animation
-  reorient-art.py re-encodes the .ans art to reduce row seams (run after editing any frame)
-  art-png.py      converts the .ans art to PNG and back, to edit frames in a pixel editor
-art/              .ans frames: frames (large), framesS (small), banner; *256 for 256-color terminals
+  build-art.py    draws every frame in art/ from the pixel grids it contains
+  build-demo.py   redraws docs/demo.gif from the same grids (needs Chrome)
+  reorient-art.py re-encodes the .ans art to reduce row seams (build-art.py already does it)
+  art-png.py      converts the .ans art to PNG and back
+art/<style>/      .ans frames: frames (large), framesS (small), banner; *256 for 256-color terminals.
+                  Every text cell holds two pixels, drawn with half blocks
 ```
 
 An installed plugin's folder changes with every version, so the status line points to the
 stable copy in `~/.claude/claudia-avatar/app/`, which the session-start hook keeps up to date.
 
-To edit a frame in a pixel editor (Aseprite, Piskel…):
+The frames are not drawn one by one. `scripts/build-art.py` holds, for each style and size, one
+base grid (a character per pixel) and small patches for the eyes, the mouth, the star, the sweat
+drop and the keyboard; an expression is a combination of patches. To change the art, edit the
+grids and run it:
 
 ```
-scripts/art-png.py to-png                              # art/ → art-png/ (git-ignored), 1 px per pixel
-scripts/art-png.py from-png art-png/frames/idle.png    # back to art/frames/idle.ans
-scripts/art-png.py from-png -o art/frames256/idle.ans art-png/frames/idle.png   # 256-color version
+scripts/build-art.py              # rewrites art/
+scripts/build-art.py --previews   # also the PNGs in docs/ and the plugin icon
+scripts/build-art.py --check      # exit 1 if art/ is not what the script would write
+scripts/build-demo.py             # redraws docs/demo.gif (needs Chrome or Chromium)
 ```
 
-`from-png` orients the block glyphs like `reorient-art.py` and maps colors to the 256-color
-palette the art already uses. Run `scripts/art-png.py` with no arguments for all the options.
+A new style is a new entry in `STYLES` (its colors) and three sprites in `SPRITES`: the setup and
+the status line pick up every folder in `art/`. The 256-color palette is in the same file, next
+to each truecolor value.
+
+`scripts/art-png.py to-png` exports the frames as PNG (in `art-png/`, git-ignored), to look at
+them or to sketch over them in a pixel editor (Aseprite, Piskel…). A frame brought back with
+`from-png` is overwritten by the next build, so copy the change into the grids.
 
 To try it locally without installing: `claude --plugin-dir .`, then `/claudia-avatar:setup`.
 To release a new version, bump `version` in `.claude-plugin/plugin.json`: without that, users

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Sets up Claudia's status line in ~/.claude/settings.json (a plugin cannot do this by itself).
-# Usage: setup.sh install [--force] [--banner|--no-banner]
+# Usage: setup.sh install [--force] [--banner|--no-banner] [--style=NAME]
+#        setup.sh style NAME      pick the avatar style (a folder in art/), effective at once
 #        setup.sh uninstall
 #        setup.sh status
 # Exit codes: 0 ok · 3 another status line is already set (re-run with --force) · 1 error
@@ -13,11 +14,24 @@ CMD="$HOME_DIR/app/statusline.sh"
 MARK_START="# >>> claudia-avatar >>>"; MARK_END="# <<< claudia-avatar <<<"
 
 MODE="${1:-install}"; shift || true
-FORCE=0; BANNER=keep
+FORCE=0; BANNER=keep; STYLE=""
+if [ "$MODE" = style ]; then STYLE="${1:-}"; shift || true; fi
 for a in "$@"; do case "$a" in
   --force) FORCE=1;; --banner) BANNER=on;; --no-banner) BANNER=off;;
+  --style=*) STYLE="${a#--style=}";;
   *) echo "unknown option: $a" >&2; exit 1;;
 esac; done
+
+# --- style: kept in its own file, which the status line and the banner read ---------
+styles() { for d in "$ROOT"/art/*/frames; do if [ -d "$d" ]; then basename "$(dirname "$d")"; fi; done | paste -sd ' ' -; }
+current_style() { local s=""; if [ -f "$HOME_DIR/style" ]; then read -r s < "$HOME_DIR/style" || true; fi; echo "${s:-portrait}"; }
+check_style() { # $1 = name
+  if [[ ! $1 =~ ^[a-z0-9_-]+$ ]] || [ ! -d "$ROOT/art/$1/frames" ]; then
+    echo "unknown style: ${1:-(none given)} (available: $(styles))" >&2; exit 1
+  fi
+}
+set_style() { mkdir -p "$HOME_DIR"; printf '%s\n' "$1" > "$HOME_DIR/style"; echo "style: $1"; }
+if [ -n "$STYLE" ] || [ "$MODE" = style ]; then check_style "$STYLE"; fi
 
 # --- settings.json: status line, and cleanup of older manual installs -------------
 # Removes the hooks that earlier installers (install.sh and claudia-companion) put in
@@ -116,7 +130,11 @@ case "$MODE" in
     settings status
     echo "app: $( [ -x "$CMD" ] && echo "present ($(cat "$HOME_DIR/app/.source" 2>/dev/null))" || echo missing)"
     if grep -qsF "$MARK_START" "$HOME/.bashrc" "$HOME/.zshrc"; then echo "banner: on"; else echo "banner: off"; fi
+    echo "style: $(current_style) (available: $(styles))"
     [ -d "$CFG/claudia" ] && echo "note: the claudia-companion folder is still in $CFG/claudia"
+    exit 0;;
+  style)
+    set_style "$STYLE"
     exit 0;;
   install)
     "$ROOT/scripts/sync.sh" --force
@@ -127,6 +145,7 @@ case "$MODE" in
     [ -n "$out" ] && echo "removed ${out#removed-legacy-hooks=} hooks of the old install from settings.json"
     echo "status line set: $CMD (settings.json backup saved next to it)"
     case "$BANNER" in on) add_banner;; off) remove_banner;; esac
+    if [ -n "$STYLE" ]; then set_style "$STYLE"; else echo "style: $(current_style)"; fi
     [ -d "$CFG/claudia" ] && echo "note: the claudia-companion folder ($CFG/claudia) is no longer needed and can be deleted"
     exit 0;;
   uninstall)
@@ -134,5 +153,5 @@ case "$MODE" in
     remove_banner
     rm -rf "$HOME_DIR" && echo "removed $HOME_DIR"
     exit 0;;
-  *) echo "usage: setup.sh install|uninstall|status" >&2; exit 1;;
+  *) echo "usage: setup.sh install|uninstall|status|style NAME" >&2; exit 1;;
 esac
