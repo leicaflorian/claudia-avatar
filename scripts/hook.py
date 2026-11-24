@@ -113,11 +113,15 @@ elif ev == "PreToolUse":
     f = i.get("file_path") or i.get("notebook_path")
     if t in ("Edit", "MultiEdit", "Write", "NotebookEdit") and f and f not in s["turn"]["files"]: s["turn"]["files"].append(f)
 elif ev == "PostToolUse":
-    if t != "Bash" or not is_test(i.get("command")): sys.exit(0)
-    r = j.get("tool_response") or {}
-    out = r if isinstance(r, str) else "\n".join(x for x in (r.get("stdout"), r.get("stderr")) if x)
-    s["test"] = dict(test_result(out, False), ts=now)
-    st, lb = ("happy", "tests green!") if s["test"]["ok"] else ("error", "tests red")
+    # A tool finished: until the next event Claude is either thinking or writing its
+    # reply, and hooks can't tell which. Claudia types.
+    if t != "Bash" or not is_test(i.get("command")):
+        st, lb = "type", "writing…"
+    else:
+        r = j.get("tool_response") or {}
+        out = r if isinstance(r, str) else "\n".join(x for x in (r.get("stdout"), r.get("stderr")) if x)
+        s["test"] = dict(test_result(out, False), ts=now)
+        st, lb = ("happy", "tests green!") if s["test"]["ok"] else ("error", "tests red")
 elif ev == "PostToolUseFailure":
     if t == "Bash" and is_test(i.get("command")):
         s["test"] = dict(test_result(j.get("error"), True), ts=now); st, lb = "error", "tests red"

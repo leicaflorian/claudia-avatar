@@ -117,7 +117,9 @@ switch (ev) {
     break;
   }
   case 'PostToolUse': {
-    if (t !== 'Bash' || !isTest(i.command)) process.exit(0); // nothing else to record
+    // A tool finished: until the next event Claude is either thinking or writing its
+    // reply, and hooks can't tell which. Claudia types.
+    if (t !== 'Bash' || !isTest(i.command)) { st = 'type'; lb = 'writing…'; break; }
     const r = j.tool_response || {};
     const out = typeof r === 'string' ? r : [r.stdout, r.stderr].filter(Boolean).join('\n');
     s.test = { ...testResult(out, false), ts: now };

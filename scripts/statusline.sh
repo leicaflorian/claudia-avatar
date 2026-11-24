@@ -30,10 +30,12 @@ age=$(( $(date +%s) - ${ts:-0} ))
 n=$(( $(cat "$sf.n" 2>/dev/null || echo 0) + 1 )); echo $n > "$sf.n"; ab=$(( n % 2 + 1 ))
 
 case "$state" in
-  think|read|type|talk|web|wait|compact) f="$state$ab";;
+  # after a few seconds of thinking she starts typing the reply (hooks can't see it)
+  think) if (( age < 8 )); then f="think$ab"; else f="type$ab"; label="writing…"; fi;;
+  read|type|talk|web|wait|compact) f="$state$ab";;
   error) if (( age < 60 )); then f="error$ab"; else f=idle; label="ready"; fi;;
   wink)  f=wink;;
-  happy) if (( age < 20 )); then f=happy; else f="talk$ab"; label="working…"; fi;;
+  happy) if (( age < 20 )); then f=happy; else f="type$ab"; label="writing…"; fi;;
   done)  if (( age < 45 )); then f=happy; else f=idle; fi;;
   *)     f=idle;;
 esac

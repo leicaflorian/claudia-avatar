@@ -66,7 +66,8 @@ after an update: the status line refreshes itself when the next session starts.
 |---|---|
 | You send a prompt | thinks: looks up, then aside |
 | Read, Grep, Glob | reads: her eyes scan — `reading Foo.php` |
-| Edit, Write, TodoWrite | types, focused, the star sparkles — `editing Bar.php` |
+| Edit, Write, TodoWrite | types at her keyboard, the star sparkles — `editing Bar.php` |
+| Writes the reply (after a tool, or after a few seconds of thinking) | types — `writing…` |
 | Bash, MCP tools | talks into the mic — `$ composer install…` |
 | WebSearch, WebFetch | looks up — `reading docs.example.com` |
 | Delegates to a subagent | winks |
