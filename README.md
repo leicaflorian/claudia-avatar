@@ -156,4 +156,4 @@ don't get the update.
 The code is released under the [MIT License](LICENSE). The Claudia character belongs to
 anabology ([claudia.gallery](https://claudia.gallery)): the license doesn't grant any rights in
 the character itself, so please credit "Claudia by anabology" when you reuse her. See
-[LICENSE](LICENSE) for the full note.
+[NOTICE](NOTICE) for the full note.

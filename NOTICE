@@ -1,0 +1,10 @@
+About the Claudia character
+===========================
+
+Claudia is an open character created by anabology (https://claudia.gallery).
+The pixel-art frames in art/, docs/ and .claude-plugin/icon.png are a fan
+redraw of that character. The MIT license in LICENSE covers this repository's code
+and these drawings as far as this project's own work goes; it does not grant
+any rights in the Claudia character itself, which remain with anabology under
+the terms they publish. Please credit "Claudia by anabology" when you reuse the
+character. This project is not affiliated with anabology or with Anthropic.

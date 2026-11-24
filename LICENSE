@@ -19,15 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-About the character
-
-Claudia is an open character created by anabology (https://claudia.gallery).
-The pixel-art frames in art/, docs/ and .claude-plugin/icon.png are a fan
-redraw of that character. The MIT license above covers this repository's code
-and these drawings as far as this project's own work goes; it does not grant
-any rights in the Claudia character itself, which remain with anabology under
-the terms they publish. Please credit "Claudia by anabology" when you reuse the
-character. This project is not affiliated with anabology or with Anthropic.
